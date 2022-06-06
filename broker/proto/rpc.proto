@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package broker;
+
+message Void {
+}
+
+message ProducerInput {
+  string topic = 1;
+  uint32 partition = 2;
+  bytes message_set = 3;
+  int32 required_acks = 4;
+}
+
+message ConsumerInput {
+  int32 replica_id = 1;
+  string topic = 2;
+  uint32 partition = 3;
+  uint64 offset = 4;
+  uint64 max_bytes = 5;
+}
+
+message ConsumerOutput {
+  bytes messages = 1;
+  uint64 watermark = 2;
+}
+
+message TopicInput {
+  string topic = 1;
+  uint32 partitions = 2;
+  uint32 replicas = 3;
+}
+
+message BrokerInfo {
+  string hostname = 1;
+  string port = 2;
+  uint32 replica_id = 3;
+}
+
+message TopicPartition {
+  string topic = 1;
+  uint32 partition = 2;
+}
+
+message LeaderOrFollow {
+  map <string, string> leader = 1;
+  map <string, string> follow = 2;
+}
+
+message Topic {
+  string topic = 1;
+}
+
+message Partitions {
+  repeated uint32 partitions = 1;
+}
+
+service Broker {
+  rpc get_controller(Void) returns (BrokerInfo);
+  rpc get_leader(TopicPartition) returns (BrokerInfo);
+  rpc create_topic(TopicInput) returns (Void);
+  rpc produce(ProducerInput) returns (Void);
+  rpc consume(ConsumerInput) returns (ConsumerOutput);
+  rpc set_leader_or_follow(LeaderOrFollow) returns (Void);
+  rpc get_partitions(Topic) returns (Partitions);
+}

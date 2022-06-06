@@ -1,0 +1,23 @@
+[package]
+name = "cmd"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+broker = { path = "../broker" }
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros", "sync", "time", "net"] }
+rand = "0.8.5"
+
+[[bin]]
+name = "broker"
+path = "src/broker.rs"
+
+[[bin]]
+name = "create_topic"
+path = "src/create_topic.rs"
+
+[[bin]]
+name = "simple_producer"
+path = "src/simple_producer.rs"
