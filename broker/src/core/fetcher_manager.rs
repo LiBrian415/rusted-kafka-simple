@@ -56,6 +56,10 @@ impl FetcherManager {
         &self,
         topic_partition: &TopicPartition,
     ) -> ReplicaResult<(JoinHandle<ReplicaResult<()>>, Arc<Watcher>)> {
+        println!("-----CREATE FETCHER THREAD-----");
+        println!("topic_partition: {:?}", topic_partition);
+        println!();
+
         let notify = Arc::new(Notify::new());
         let replica_manager = self.get_replica_manager();
         let zk_client = self.zk_client.clone();
